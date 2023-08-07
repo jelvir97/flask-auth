@@ -4,6 +4,12 @@
 
 {% block contents %}
 <div class="col-md-8 offset-md-2">
+    {% for msg in get_flashed_messages()%}
+    <div class="alert alert-dismissible alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>{{msg}}</strong>
+    </div>
+    {% endfor %}
 <h1>Sign Up!</h1>
 <h3></h3>
 <form id="register-form" action="/register" method="post">
@@ -28,7 +34,7 @@
 
   {% endfor %}
 
-  <button type="submit">Submit</button>
+  <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 </div>
 {% endblock %}

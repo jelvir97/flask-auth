@@ -25,3 +25,18 @@ def register():
     form = RegisterForm()
     return render_template('register.html', form=form)
 
+@app.route('/register', methods=['POST'])
+def handle_user_registration():
+    """Validates registration form"""
+    form = RegisterForm()
+    if form.validate_on_submit():
+        user = User.register(form.username.data,
+                                form.password.data,
+                                form.email.data,
+                                form.first_name.data,
+                                form.last_name.data)
+        db.session.add(user)
+        db.session.commit()
+        flash(f"Welcome {user.username}!")
+        return redirect("/register")
+
