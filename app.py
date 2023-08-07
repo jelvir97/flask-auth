@@ -1,7 +1,7 @@
 from flask import Flask, render_template,flash,get_flashed_messages, request,session, redirect
 from flask_debugtoolbar import DebugToolbarExtension
 from models import connect_db, User, db
-from forms import RegisterForm
+from forms import RegisterForm, LoginForm
 
 app = Flask(__name__)
 
@@ -39,4 +39,35 @@ def handle_user_registration():
         db.session.commit()
         flash(f"Welcome {user.username}!")
         return redirect("/register")
+
+@app.route('/login', methods=["GET"])
+def login():
+    """Renders login form for users"""
+    form = LoginForm()
+    return render_template('login.html',form = form)
+
+@app.route('/login', methods=["POST"])
+def handle_user_login():
+    """Handles user login form submit"""
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.authenticate(form.username.data,form.password.data)
+
+        if user:
+            session["username"] = user.username  # keep logged in
+            return redirect("/secret")
+
+        else:
+            form.username.errors = ["Invalid name/password"]
+
+    return render_template("login.html", form=form)
+
+@app.route('/secret')
+def secret_page():
+    if "username" not in session:
+        flash('You must be signed in to view this page.')
+        return redirect('/login')
+    
+    return 'Secret Pgae'
+    
 
