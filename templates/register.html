@@ -3,7 +3,6 @@
 {% block title %}Sign Up!{% endblock %}
 
 {% block contents %}
-<div class="col-md-8 offset-md-2">
     {% for msg in get_flashed_messages()%}
     <div class="alert alert-dismissible alert-success">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -11,7 +10,7 @@
     </div>
     {% endfor %}
 <h1>Sign Up!</h1>
-<h3></h3>
+<h4>Already have an account? <a href="/login">Login.</a></h4>
 <form id="register-form" action="/register" method="post">
     {{ form.hidden_tag() }} <!--add type=hidden form fields -->
 
@@ -36,5 +35,4 @@
 
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
-</div>
 {% endblock %}

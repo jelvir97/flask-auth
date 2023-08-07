@@ -62,6 +62,12 @@ def handle_user_login():
 
     return render_template("login.html", form=form)
 
+@app.route('/logout',methods=["POST"])
+def logout_user():
+    """Removes username from session and returns to login page."""
+    session.pop('username')
+    return redirect('/login')
+
 @app.route('/secret')
 def secret_page():
     if "username" not in session:
