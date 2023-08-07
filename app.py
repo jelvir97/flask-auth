@@ -55,25 +55,27 @@ def handle_user_login():
 
         if user:
             session["username"] = user.username  # keep logged in
-            return redirect("/secret")
+            return redirect(f"/users/{user.username}")
 
         else:
             form.username.errors = ["Invalid name/password"]
 
     return render_template("login.html", form=form)
 
-@app.route('/logout',methods=["POST"])
+@app.route('/logout')
 def logout_user():
     """Removes username from session and returns to login page."""
     session.pop('username')
     return redirect('/login')
 
-@app.route('/secret')
-def secret_page():
+@app.route('/users/<username>')
+def secret_page(username):
     if "username" not in session:
         flash('You must be signed in to view this page.')
         return redirect('/login')
     
-    return 'Secret Pgae'
+    user = User.query.filter_by(username=username).first()
+    
+    return render_template('user_info.html',user=user)
     
 
