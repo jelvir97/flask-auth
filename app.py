@@ -84,11 +84,13 @@ def add_feedback_form(username):
     if "username" not in session:
         flash('You must be signed in to view this page.')
         return redirect('/login')
+    if username == session['username']:
+        user = User.query.filter_by(username=username).first()
+        form = AddFeedbackForm(username=username)
 
-    user = User.query.filter_by(username=username).first()
-    form = AddFeedbackForm(username=username)
-
-    return render_template('feedback_form.html',user = user, form=form)
+        return render_template('feedback_form.html',user = user, form=form)
+    
+    return redirect(f'/users/{session["username"]}')
 
 @app.route('/users/<username>/feedback/add', methods=['POST'])
 def handle_feedback_form_post(username):
@@ -103,4 +105,19 @@ def handle_feedback_form_post(username):
         return redirect(f'/users/{username}')
     return redirect(f'/users/{username}/feedback/add')
     
+@app.route('/feedback/<id>/delete', methods=["POST"])
+def delete_feedback(id):
+    if "username" not in session:
+        flash('You must be signed in to view this page.')
+        return redirect('/login')
+    
+    fb= Feedback.query.filter_by(id=id).one()
+
+    if session['username'] == fb.username:
+        db.session.delete(fb)
+        db.session.commit()
+        flash('Success! Feedback deleted.')
+    else:
+        flash('You do not have permission to delete that feedback.')
+    return redirect(f"/users/{session['username']}")
 

@@ -31,6 +31,10 @@
             <div class="card-body">
               <h4 class="card-title">{{post.title}}</h4>
               <p class="card-text">{{post.content}}</p>
+                {% if user.username == post.username %}
+                    <a href="/feedback/{{post.id}}/update" class="btn btn-info">Update</a>
+                    <form action="/feedback/{{post.id}}/delete" method="post"><button class="btn btn-danger" type="submit">Delete</button></form>
+                {% endif %}
             </div>
           </div>
         {% endfor %}
