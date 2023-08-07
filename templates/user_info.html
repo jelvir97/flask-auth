@@ -18,4 +18,22 @@
             Last Name: {{user.last_name}}
         </li>
     </ul>
+
+    {% if session.username == user.username %}
+        <a href="/users/{{user.username}}/feedback/add" class="btn btn-info">Add Feedback</a>
+        <a href="/users/{{user.username}}/delete" class="btn btn-danger">Delete User</a> 
+    {% endif %}
+    <hr>
+    <h3>{{user.username}}'s Feedback</h3>
+    <div>
+        {% for post in posts %}
+        <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
+            <div class="card-body">
+              <h4 class="card-title">{{post.title}}</h4>
+              <p class="card-text">{{post.content}}</p>
+            </div>
+          </div>
+        {% endfor %}
+    </div>
+
 {% endblock %}
