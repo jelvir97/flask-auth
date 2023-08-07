@@ -20,3 +20,8 @@ class AddFeedbackForm(FlaskForm):
     title = StringField("Title", validators=[InputRequired(),Length(max=100)])
     content = TextAreaField("Feedback Description", validators=[InputRequired()])
     username = HiddenField("username", validators=[InputRequired()])
+
+class UpdateFeedbackForm(FlaskForm):
+    """Form for updating existing feedback"""
+    title = StringField("Title", validators=[InputRequired(),Length(max=100)])
+    content = TextAreaField("Feedback Description", validators=[InputRequired()])
